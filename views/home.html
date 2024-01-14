@@ -1,0 +1,72 @@
+<!-- views/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h2>Welcome to the Home Page!</h2>
+
+    <h3>User Table</h3>
+    <table border="1" id="userTable">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Registration Date</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <!-- User data will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h3>Product Table</h3>
+    <table border="1" id="productTable">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock Quantity</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            <!-- Product data will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch user data from the server and populate the user table
+        fetch('/getusers')
+            .then(response => response.json())
+            .then(users => {
+                const userTableBody = document.getElementById('userTableBody');
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${user.user_id}</td><td>${user.username}</td><td>${user.email}</td><td>${user.registration_date}</td>`;
+                    userTableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching user data:', error));
+
+        // Fetch product data from the server and populate the product table
+        fetch('/getproducts')
+            .then(response => response.json())
+            .then(products => {
+                const productTableBody = document.getElementById('productTableBody');
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${product.product_id}</td><td>${product.product_name}</td><td>${product.description}</td><td>${product.price}</td><td>${product.stock_quantity}</td><td>${product.created_at}</td>`;
+                    productTableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching product data:', error));
+    </script>
+</body>
+</html>
